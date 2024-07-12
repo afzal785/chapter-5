@@ -1,0 +1,12 @@
+def maxCoins(piles):
+    piles.sort(reverse=True)
+    n = len(piles) // 3
+    return sum(piles[i * 2 + 1] for i in range(n))
+
+# Example 1
+piles1 = [2, 4, 1, 2, 7, 8]
+print(maxCoins(piles1))  # Output: 9
+
+# Example 2
+piles2 = [2, 4, 5]
+print(maxCoins(piles2))  # Output: 4
