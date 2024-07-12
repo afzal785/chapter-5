@@ -1,0 +1,54 @@
+from heapq import heappush, heappop, heapify
+
+class Node:
+    def __init__(self, char, freq):
+        self.char = char
+        self.freq = freq
+        self.left = None
+        self.right = None
+
+    def __lt__(self, other):
+        return self.freq < other.freq
+
+def build_huffman_tree(characters, frequencies):
+    nodes = [Node(char, freq) for char, freq in zip(characters, frequencies)]
+    heapify(nodes)
+    
+    while len(nodes) > 1:
+        left = heappop(nodes)
+        right = heappop(nodes)
+        
+        merged = Node(None, left.freq + right.freq)
+        merged.left = left
+        merged.right = right
+        
+        heappush(nodes, merged)
+    
+    return nodes[0]
+
+def generate_huffman_codes(root, prefix="", codes={}):
+    if root:
+        if not root.left and not root.right:
+            codes[root.char] = prefix
+        generate_huffman_codes(root.left, prefix + "0", codes)
+        generate_huffman_codes(root.right, prefix + "1", codes)
+    
+    return [(char, codes[char]) for char in codes]
+
+# Test Case 1
+n = 4
+characters = ['a', 'b', 'c', 'd']
+frequencies = [5, 9, 12, 13]
+root = build_huffman_tree(characters, frequencies)
+output = generate_huffman_codes(root)
+
+print(output)
+
+# Test Case 2
+n = 6
+characters = ['f', 'e', 'd', 'c', 'b', 'a']
+frequencies = [5, 9, 12, 13, 16, 45]
+root = build_huffman_tree(characters, frequencies)
+output = generate_huffman_codes(root)
+
+print(output)
