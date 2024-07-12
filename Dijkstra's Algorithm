@@ -1,0 +1,42 @@
+import sys
+
+def dijkstra(graph, source):
+    n = len(graph)
+    dist = [sys.maxsize] * n
+    dist[source] = 0
+    visited = [False] * n
+
+    for _ in range(n):
+        u = min_distance(dist, visited)
+        visited[u] = True
+
+        for v in range(n):
+            if not visited[v] and graph[u][v] and dist[u] + graph[u][v] < dist[v]:
+                dist[v] = dist[u] + graph[u][v]
+
+    return dist
+
+def min_distance(dist, visited):
+    min_dist = sys.maxsize
+    min_index = -1
+
+    for v in range(len(dist)):
+        if dist[v] < min_dist and not visited[v]:
+            min_dist = dist[v]
+            min_index = v
+
+    return min_index
+
+# Test Case 1
+n = 5
+graph = [[0, 10, 3, sys.maxsize, sys.maxsize], [sys.maxsize, 0, 1, 2, sys.maxsize], [sys.maxsize, 4, 0, 8, 2],
+         [sys.maxsize, sys.maxsize, sys.maxsize, 0, 7], [sys.maxsize, sys.maxsize, sys.maxsize, 9, 0]]
+source = 0
+print(dijkstra(graph, source))
+
+# Test Case 2
+n = 4
+graph = [[0, 5, sys.maxsize, 10], [sys.maxsize, 0, 3, sys.maxsize], [sys.maxsize, sys.maxsize, 0, 1],
+         [sys.maxsize, sys.maxsize, sys.maxsize, 0]]
+source = 0
+print(dijkstra(graph, source))
